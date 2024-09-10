@@ -9,5 +9,5 @@ The project automates and simplifies the task of converting unstructured data in
 ## Project Execution
 
 ```bash
-$ docker-compose up --build
+$ docker compose up --build
 ```
