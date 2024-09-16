@@ -11,3 +11,27 @@ The project automates and simplifies the task of converting unstructured data in
 ```bash
 $ docker compose up --build
 ```
+
+## Gemma2:2b Setup via Ollama in Local
+
+1. [Install Ollama](https://ollama.com/)
+2. [Install gemma2:2b](https://ollama.com/library/gemma2:2b)
+
+```bash
+ollama run gemma2:2b
+```
+3. Install dependency
+
+```bash
+$ pip install -r requirements.txt
+```
+
+3. Now you can chat with your LLM model
+
+```python
+from langchain_community.llms import Ollama
+llm = Ollama(model="gemma2:2b")
+response = llm.invoke("how are you today?")
+print(response)
+# response: I'm doing well! 😊  How are you today? 
+```
