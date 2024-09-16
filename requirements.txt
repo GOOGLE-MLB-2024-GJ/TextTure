@@ -6,3 +6,4 @@ python-dotenv
 langchain
 sqlalchemy
 langchain_community
+langchain_experimental
