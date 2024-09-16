@@ -3,3 +3,6 @@ TextTure.iml
 data/
 assets/
 models/
+
+# __pycache__
+*.pyc
