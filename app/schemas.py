@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 class NewsBase(BaseModel):
+    title: str
     main_category: str
     sub_category: str
     contents: str
