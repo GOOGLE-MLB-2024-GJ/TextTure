@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-# text-to-sql 라우터 구성 : v1은 임시 prefix
+# text-to-sql 라우터 구성
 sql = APIRouter(
-    prefix="/v1"
+    prefix="/sql"
 )
 
 # 라우터 테스트
