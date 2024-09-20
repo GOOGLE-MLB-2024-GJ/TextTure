@@ -1,6 +1,10 @@
 from fastapi import FastAPI
+from langchain.text_to_sql import sql
 
 app = FastAPI()
+
+# text-to-sql 라우터 설정
+app.include_router(sql)
 
 
 @app.get("/")
