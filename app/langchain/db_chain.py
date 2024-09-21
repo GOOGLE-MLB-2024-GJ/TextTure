@@ -28,6 +28,7 @@ def sql_from_text(user_input):
 
     # 데이터베이스 스키마 가져오기(반환값)
     schema_info = get_database_schema()
+    print("get_databse_schema 성공")
 
 
     """
@@ -55,6 +56,8 @@ def sql_from_text(user_input):
     """
 
     # gemma2:2b 모델: SQL 생성
+    print("call_gemma 실행 전")
     sql_query = call_gemma(prompt)
+    print("call_gemma 실행 완료")
 
     return sql_query

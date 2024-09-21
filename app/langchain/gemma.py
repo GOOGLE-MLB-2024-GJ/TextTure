@@ -2,23 +2,29 @@
 langchain 프레임워크의 Ollama 클래스를 사용하여 프로젝트에 사용될 gemma2:2b를 설정하는 스크립트
 """
 
+import traceback
 from langchain_community.llms import Ollama
 
 # ollama를 이용한 gemma2:2b 모델 설정
-def call_gemma(prompt):
+def call_gemma(prompt: str):
     
 
     try:
         # Gemma2:2b 모델 설정
         llm = Ollama(model="gemma2:2b")
+        print("Gemma2:2b 모델 설정 완료")
+
         # 프롬프트로 모델 호출(invoke 메서드 사용해야지 추가적인 메시지 x)
-        response = llm.invoke(prompt)  
+        response = llm.invoke(prompt)
+        
+        print("Gemma 모델 응답 완료")  
 
         return response
     
     # 예외처리
     except Exception as e:
         print(f"Gemma 모델 호출 오류: {e}")
+        traceback.print_exc()  # 전체 오류 스택 추적을 출력
         return ""
 
 

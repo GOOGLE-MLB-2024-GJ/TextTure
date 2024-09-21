@@ -18,6 +18,9 @@ async def text_to_sql_test():
 async def text_to_sql(user_input: User):
 
     # text-to-sql 기능 함수 실행
-    sql_query = sql_from_text(user_input)
-    return {"response": sql_query}
+    try:
+        sql_query = sql_from_text(user_input.user_input)
+        return {"response": sql_query}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"SQL 변환 중 오류 발생: {e}")
 
