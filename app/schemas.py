@@ -13,3 +13,8 @@ class News(NewsBase):
 
     class Config:
         orm_mode = True
+
+
+class RawContent(BaseModel):
+    contents: str
+    source_site: str

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from langchain.text_to_sql import sql
+from .langchain.text_to_sql import sql
 
 app = FastAPI()
 
