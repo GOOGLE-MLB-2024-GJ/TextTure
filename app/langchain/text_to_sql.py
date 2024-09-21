@@ -13,8 +13,3 @@ sql = APIRouter(
 def text_to_sql(text: str) -> dict:
     result = call_gemma(text)
     return {"message": result}
-
-@sql.post('/raw_to_insert', tags=["sql"])
-def raw_to_insert(raw: RawContent):
-    result = raw_to_insert(raw)
-    return ""
