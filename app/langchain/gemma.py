@@ -5,7 +5,7 @@ langchain 프레임워크의 Ollama 클래스를 사용하여 프로젝트에 �
 from langchain_community.llms import Ollama
 
 # ollama를 이용한 gemma2:2b 모델 설정
-def call_gemma(prompt: str) -> str:
+def call_gemma(prompt):
     
 
     try:

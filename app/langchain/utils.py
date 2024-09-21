@@ -2,7 +2,7 @@
 db_chain.py 등 스크립트 내의 메서드(함수)에 사용되는 함수를 정의한 스크립트
 """
 from sqlalchemy import inspect
-from app.database import SessionLocal
+from database import SessionLocal
 
 
 """

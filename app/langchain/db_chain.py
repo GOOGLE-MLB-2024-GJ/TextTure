@@ -1,12 +1,12 @@
-from langchain.utilities import SQLDatabase
-from langchain_experimental.sql import SQLDatabaseChain
-from gemma import llm
+# from langchain.utilities import SQLDatabase
+# from langchain_experimental.sql import SQLDatabaseChain
+# from gemma import llm
 from dotenv import load_dotenv
 import os
 
 # 새로 생성 : 경준
-from gemma import call_gemma # gemma 설정 함수
-from utils import get_database_schema # 데이터베이스 정보 반환 함수
+from .gemma import call_gemma # gemma 설정 함수
+from .utils import get_database_schema # 데이터베이스 정보 반환 함수
 
 load_dotenv(dotenv_path='../../.env.development')
 
@@ -15,8 +15,8 @@ MARIADB_DATABASE = os.getenv('MARIADB_DATABASE')
 
 SQLALCHEMY_DATABASE_URL = f'mysql+pymysql://root:{MARIADB_ROOT_PASSWORD}@localhost:3306/{MARIADB_DATABASE}'
 
-db = SQLDatabase.from_uri(SQLALCHEMY_DATABASE_URL, sample_rows_in_table_info=2)
-db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+# db = SQLDatabase.from_uri(SQLALCHEMY_DATABASE_URL, sample_rows_in_table_info=2)
+# db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
 
 
 """
@@ -24,7 +24,7 @@ text-to-sql 기능 함수
 1. 데이터베이스 스키마 탐색 
 2. gemma2:2b 모델 이용한 텍스트를 SQL로 변환
 """
-def sql_from_text(user_input: str) -> str:
+def sql_from_text(user_input):
 
     # 데이터베이스 스키마 가져오기(반환값)
     schema_info = get_database_schema()
