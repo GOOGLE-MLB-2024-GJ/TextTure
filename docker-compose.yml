@@ -9,6 +9,8 @@ services:
       - ./app:/code/app
     depends_on:
       - db
+    networks:
+      - fastapi_network
   db:
     image: mariadb:10.5
     restart: always
@@ -17,6 +19,12 @@ services:
     volumes:
       - ./data:/var/lib/mysql
     env_file:
-      - ./.env.development
+      - .env
+    networks:
+      - fastapi_network
+
 volumes:
   data:
+
+networks:
+  fastapi_network:

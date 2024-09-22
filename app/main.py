@@ -1,5 +1,9 @@
 from fastapi import FastAPI
-from langchain.text_to_sql import sql
+from .langchain.text_to_sql import sql
+from . import crud, models, schemas
+from .database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
