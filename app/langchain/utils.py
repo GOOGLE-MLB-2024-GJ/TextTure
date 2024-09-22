@@ -4,7 +4,6 @@ db_chain.py 등 스크립트 내의 메서드(함수)에 사용되는 함수를 
 from sqlalchemy import inspect
 from database import SessionLocal
 
-
 """
 데이터베이스 스키마(테이블 및 컬럼 정보) 반환 함수
 """

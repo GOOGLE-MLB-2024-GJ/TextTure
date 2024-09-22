@@ -1,26 +1,26 @@
-from fastapi import APIRouter, HTTPException
-from schemas import User
-from .db_chain import sql_from_text
+from fastapi import APIRouter
+from .gemma import call_gemma
+from .db_chain import raw_to_insert, sql_from_text
+from ..schemas import RawContent
+
 
 # text-to-sql 라우터 구성
 sql = APIRouter(
     prefix="/sql"
 )
 
-# 라우터 테스트
-@sql.get("/test", tags=["sql"])
-async def text_to_sql_test():
-    return {"message" : "hi"}
 
+def gemma(text: str) -> dict:
+    result = call_gemma(text)
+    return {"message": result}
 
-# text-to-sql API
-@sql.post("/text", tags=["sql"])
-async def text_to_sql(user_input: User):
+@sql.get('/sql_from_text', tags=["sql"])
+def text_to_sql(text:str):
+    result = sql_from_text(text)
+    return {'message': result}
 
-    # text-to-sql 기능 함수 실행
-    try:
-        sql_query = sql_from_text(user_input.user_input)
-        return {"response": sql_query}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"SQL 변환 중 오류 발생: {e}")
-
+# TODO: 이후 작성
+@sql.post("/raw_to_insert", tags=["sql"])
+def raw_to_insert(raw: RawContent):
+    result = raw_to_insert(raw)
+    return {'message': result}
