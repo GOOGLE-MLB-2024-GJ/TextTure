@@ -60,21 +60,27 @@ def extract_keywords_from_text(text: str) -> dict:
     prompt = f"다음 텍스트에서 제목, 메인 카테고리, 서브 카테고리, 내용을 추출하세요: {text}"
     response = call_gemma(prompt)
 
+    # 응답 비어 있는지 확인
+    if not response:
+        print("Gemma2:2b로부터 빈 응답을 받았습니다.")
+        raise ValueError("Gemma2:2b 모델이 응답하지 않거나 빈 응답을 반환했습니다.")
+
     try:
-        # Gemma2:2b가 JSON 문자열을 반환
+        # 응답 JSON으로 파싱
         response_json = json.loads(response)
     except json.JSONDecodeError:
-        # JSON 파싱이 실패
-        print("응답을 JSON으로 변환 불가능:", response)
-        raise
+        # JSON 파싱 오류 시 응답 내용을 출력하고 오류를 발생
+        print(f"JSON 파싱 오류: {response}")
+        raise ValueError(f"응답을 JSON으로 파싱할 수 없습니다: {response}")
 
-    # 응답을 처리하여 필요한 필드로 나눕니다.
+    # 응답에서 필요한 필드 추출
     extracted_data = {
         "title": response_json.get("title", ""),
         "main_category": response_json.get("main_category", ""),
         "sub_category": response_json.get("sub_category", ""),
         "contents": response_json.get("contents", "")
     }
+
     return extracted_data
 
 
