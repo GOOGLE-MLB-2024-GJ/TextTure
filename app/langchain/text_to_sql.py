@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from .gemma import call_gemma
-from .db_chain import raw_to_insert, sql_from_text
+from .db_chain import sql_from_text
 from ..schemas import User
 
 
