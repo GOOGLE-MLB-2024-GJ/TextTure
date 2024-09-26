@@ -3,6 +3,7 @@ from .utils import get_database_schema # 데이터베이스 정보 반환 함수
 from ..schemas import RawContent
 from ..crud import create_news
 from sqlalchemy.orm import Session
+import json
 
 
 """
@@ -59,14 +60,21 @@ def extract_keywords_from_text(text: str) -> dict:
     prompt = f"다음 텍스트에서 제목, 메인 카테고리, 서브 카테고리, 내용을 추출하세요: {text}"
     response = call_gemma(prompt)
 
-    # 응답을 처리하여 필요한 필드로 나누기
-    extracted_data = {
-        "title": response["title"],
-        "main_category": response["main_category"],
-        "sub_category": response["sub_category"],
-        "contents": response["contents"]
-    }
+    try:
+        # Gemma2:2b가 JSON 문자열을 반환
+        response_json = json.loads(response)
+    except json.JSONDecodeError:
+        # JSON 파싱이 실패
+        print("응답을 JSON으로 변환 불가능:", response)
+        raise
 
+    # 응답을 처리하여 필요한 필드로 나눕니다.
+    extracted_data = {
+        "title": response_json.get("title", ""),
+        "main_category": response_json.get("main_category", ""),
+        "sub_category": response_json.get("sub_category", ""),
+        "contents": response_json.get("contents", "")
+    }
     return extracted_data
 
 
