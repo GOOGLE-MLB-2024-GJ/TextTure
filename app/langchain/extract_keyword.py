@@ -21,7 +21,9 @@ def get_db():
 @content.post("/add_content")
 def add_content(content: RawContent, db: Session = Depends(get_db)):
     """
-    게시물 텍스트를 입력받아 키워드를 추출하고 데이터베이스에 저장하는 엔드포인트.
+    게시물 텍스트를 입력받아 키워드를 추출하고 데이터베이스에 저장 엔드포인트
     """
     result = add_content_to_db(content, db)
-    return {"message": "Content added successfully", "data": result}
+    return {"message": "키워드 추출 성공", 
+            "data": result
+            }

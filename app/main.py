@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from .langchain.text_to_sql import sql
+from .langchain.extract_keyword import content
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 
@@ -9,6 +10,9 @@ app = FastAPI()
 
 # text-to-sql 라우터 설정
 app.include_router(sql)
+
+# extract-keyword 라우터 설정
+app.include_router(content)
 
 
 @app.get("/")
