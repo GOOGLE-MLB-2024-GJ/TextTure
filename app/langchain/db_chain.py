@@ -1,6 +1,6 @@
 from .gemma import call_gemma # gemma 설정 함수
 from .utils import get_database_schema # 데이터베이스 정보 반환 함수
-from ..schemas import RawContent
+from ..schemas import RawContent, NewsBase
 from ..crud import create_news
 from sqlalchemy.orm import Session
 import re
@@ -83,21 +83,21 @@ def extract_keywords_from_text(text: str) -> dict:
 
 
 """
-1. 텍스트에서 키워드를 추출 및 데이터베이스에 삽입하는 함수
+텍스트에서 키워드를 추출 및 데이터베이스에 삽입하는 함수
 """
 def add_content_to_db(content: RawContent, db: Session):
     
     # 키워드 추출
     extracted_data = extract_keywords_from_text(content.contents)
     
-    # 데이터베이스에 저장할 데이터 생성
-    news_data = {
-        "title": extracted_data["title"],
-        "main_category": extracted_data["main_category"],
-        "sub_category": extracted_data["sub_category"],
-        "contents": extracted_data["contents"],
-        "source_site": content.source_site
-    }
+    # 데이터베이스에 저장할 데이터(News Table) 생성 
+    news_data = NewsBase(
+        title=extracted_data["title"],
+        main_category=extracted_data["main_category"],
+        sub_category=extracted_data["sub_category"],
+        contents=extracted_data["contents"],
+        source_site=content.source_site
+    )
 
     # 데이터베이스에 삽입
     return create_news(db, news=news_data)
