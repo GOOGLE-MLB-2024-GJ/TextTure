@@ -1,16 +1,27 @@
-from fastapi import APIRouter
-from .gemma import call_gemma
-from .db_chain import raw_to_insert, sql_from_text
-from ..schemas import RawContent, User
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from ..database import SessionLocal
+from ..schemas import RawContent
+from .db_chain import add_content_to_db
 
 # text-to-sql 라우터 구성
-sql = APIRouter(
+content = APIRouter(
     prefix="/content"
 )
 
+# DB 세션을 가져오는 종속성
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-# TODO: 이후 작성
-@sql.post("/raw_to_insert", tags=["content"])
-def raw_to_insert(raw: RawContent):
-    result = raw_to_insert(raw)
-    return {'message': result}
+# 게시물 추가 라우터
+@content.post("/add_content")
+def add_content(content: RawContent, db: Session = Depends(get_db)):
+    """
+    게시물 텍스트를 입력받아 키워드를 추출하고 데이터베이스에 저장하는 엔드포인트.
+    """
+    result = add_content_to_db(content, db)
+    return {"message": "Content added successfully", "data": result}
