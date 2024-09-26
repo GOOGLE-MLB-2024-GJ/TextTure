@@ -14,7 +14,11 @@ class News(NewsBase):
     class Config:
         orm_mode = True
 
+# Text-to-SQL 입력
+class User(BaseModel):
+    user_input: str
 
 class RawContent(BaseModel):
     contents: str
     source_site: str
+
