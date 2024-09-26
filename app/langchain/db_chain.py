@@ -3,7 +3,7 @@ from .utils import get_database_schema # 데이터베이스 정보 반환 함수
 from ..schemas import RawContent
 from ..crud import create_news
 from sqlalchemy.orm import Session
-import json
+import re
 
 
 """
@@ -56,29 +56,27 @@ def sql_from_text(user_input):
 2. Gemma2:2b를 호출하여 텍스트에서 데이터베이스 필드인 title, main_category, sub_category, contents 추출
 """
 def extract_keywords_from_text(text: str) -> dict:
-
+    """
+    게시물 텍스트에서 키워드를 추출하는 함수
+    Gemma2:2b의 텍스트 응답에서 title, main_category, sub_category, contents 추출.
+    """
     prompt = f"다음 텍스트에서 제목, 메인 카테고리, 서브 카테고리, 내용을 추출하세요: {text}"
     response = call_gemma(prompt)
 
-    # 응답 비어 있는지 확인
     if not response:
-        print("Gemma2:2b로부터 빈 응답을 받았습니다.")
         raise ValueError("Gemma2:2b 모델이 응답하지 않거나 빈 응답을 반환했습니다.")
 
-    try:
-        # 응답 JSON으로 파싱
-        response_json = json.loads(response)
-    except json.JSONDecodeError:
-        # JSON 파싱 오류 시 응답 내용을 출력하고 오류를 발생
-        print(f"JSON 파싱 오류: {response}")
-        raise ValueError(f"응답을 JSON으로 파싱할 수 없습니다: {response}")
+    # 정규식(re)을 사용하여 제목, 메인 카테고리, 서브 카테고리, 내용 추출
+    title_match = re.search(r"\*\*제목:\*\*\s*(.+)", response)
+    main_category_match = re.search(r"\*\*메인 카테고리:\*\*\s*(.+)", response)
+    sub_category_match = re.search(r"\*\*서브 카테고리:\*\*\s*(.+)", response)
+    contents_match = re.search(r"\*\*내용:\*\*\n*(.+)", response, re.DOTALL)
 
-    # 응답에서 필요한 필드 추출
     extracted_data = {
-        "title": response_json.get("title", ""),
-        "main_category": response_json.get("main_category", ""),
-        "sub_category": response_json.get("sub_category", ""),
-        "contents": response_json.get("contents", "")
+        "title": title_match.group(1) if title_match else "",
+        "main_category": main_category_match.group(1) if main_category_match else "",
+        "sub_category": sub_category_match.group(1) if sub_category_match else "",
+        "contents": contents_match.group(1).strip() if contents_match else ""
     }
 
     return extracted_data
