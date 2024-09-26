@@ -17,9 +17,9 @@ def get_db():
     finally:
         db.close()
 
-# 게시물 추가 라우터
-@content.post("/add_content", tags=["content"])
-def add_content(content: RawContent, db: Session = Depends(get_db)):
+# 키워드 추출 라우터
+@content.post("/keyword", tags=["content"])
+def extract_keyword(content: RawContent, db: Session = Depends(get_db)):
     """
     게시물 텍스트를 입력받아 키워드를 추출하고 데이터베이스에 저장 엔드포인트
     """
